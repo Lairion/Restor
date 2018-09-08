@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+{% block css %}
+    <link rel="stylesheet" href='{% static "css/tables.css" %}'>
+{% endblock css %}
+
+{% block content %}
+<div class="conteiner-fluid">
+	<div class="row">
+		<div class="col-4"><a href="{% url 'reserve_day' %}?date={{back}}">Back</a></div>
+		<div class="col-4"><form action="{% url 'reserve_day' %}">
+			{{form|crispy}}
+		</form></div>
+		<div class="col-4"><a href="{% url 'reserve_day' %}?date={{next}}">Back</a></div>
+	</div>
+	<div class="row">
+		<div style=" width: 100vw;height: 100vh;">
+			{% for table in tables %}
+				<div class="table {{table.form_type}}" style="left:{{table.pos_x}}%;top:{{table.pos_y}}%;height: {{table.height }}px;width:{{table.width}}px;"></div>
+			{% endfor %}
+		</div>
+	</div>
+</div>
+{% endblock content %}
+
+{% block js %}
+    
+{% endblock js %}
