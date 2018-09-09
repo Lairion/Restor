@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 {% load crispy_forms_tags %}
+{% load bootstrap %}
 {% block css %}
     <link rel="stylesheet" href='{% static "css/tables.css" %}'>
 {% endblock css %}
@@ -8,11 +9,12 @@
 {% block content %}
 <div class="conteiner-fluid">
 	<div class="row">
-		<div class="col-4"><a href="{% url 'reserve_day' %}?date={{back}}">Back</a></div>
+		<div class="col-4">{%if back%}<a href="{% url 'reserve_day' %}?date_reserver={{back}}">Back</a>{%endif%}</div>
 		<div class="col-4"><form action="{% url 'reserve_day' %}">
-			{{form|crispy}}
+			{{ date_form|bootstrap}}
+			<button class="btn btn-primary">Submit</button>
 		</form></div>
-		<div class="col-4"><a href="{% url 'reserve_day' %}?date={{next}}">Back</a></div>
+		<div class="col-4"><a href="{% url 'reserve_day' %}?date_reserver={{next}}">Next</a></div>
 	</div>
 	<div class="row">
 		<div style=" width: 100vw;height: 100vh;">

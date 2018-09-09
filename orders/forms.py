@@ -1,7 +1,8 @@
 from dal import autocomplete
-
 from django import forms
 from .models import Order,ReserverDay
+from bootstrap_datepicker.widgets import DatePicker
+from django.conf import settings
 
 class OrderForm(forms.ModelForm):
     class Meta:
@@ -15,4 +16,14 @@ class OrderForm(forms.ModelForm):
                 url='table_autocomplete')
         }
 class ReserverDayForm(forms.ModelForm):
-    date = forms.DateField()
+    class Meta:
+        model = ReserverDay
+        fields = ('__all__')
+        widgets = {
+            'date_reserver':DatePicker(
+                options={
+                    "format": "mm/dd/yyyy",
+                    "autoclose": True
+                }
+            )
+        }

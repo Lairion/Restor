@@ -1,0 +1,9 @@
+.table{
+    background-color:green;
+    position: fixed;
+}
+.ellipse{
+    -moz-border-radius: 100px / 50px;
+    -webkit-border-radius: 100px / 50px;
+    border-radius: 100px / 50px;
+}

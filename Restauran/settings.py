@@ -25,6 +25,8 @@ SECRET_KEY = 'f$n51u@-7)ezd+!uz%ld(6p)@ywpai2^ubm_k*v+g1au$li1wa'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+DATE_FORMAT = '%b %d %Y'
+
 ALLOWED_HOSTS = []
 
 
@@ -37,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'bootstrapform',
     'dal',
     'dal_select2',
     'crispy_forms',
