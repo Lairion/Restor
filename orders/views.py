@@ -60,7 +60,6 @@ class ReserverDayViews(View):
         date_query = parser.parse(date_query).date()
         reserve_day_obj = ReserverDay.objects.get_or_create(date_reserver=date_query)
         dict_form["reserve_day"]=str(reserve_day_obj[0].id)
-        print(dict_form)
         order_form = OrderForm(dict_form)
         orders = Order.objects.filter(
             tables__pk__in=[int(i) for i in dict_form["tables"]],
