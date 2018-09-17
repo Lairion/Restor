@@ -18,9 +18,14 @@ from django.urls import path, include
 from django.conf.urls.static import static
 from django.contrib import admin
 
+urls = [
+    path('',include('orders.urls')),
+    path('',include('tables.urls'))
+]
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',include('orders.urls'))
+    path("",include(urls))
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL,

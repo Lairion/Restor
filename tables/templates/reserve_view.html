@@ -1,31 +1,91 @@
 {% extends "base.html" %}
 {% load staticfiles %}
+{% load static %}
 {% load crispy_forms_tags %}
 {% load bootstrap %}
+{% load table_reserve%}
 {% block css %}
     <link rel="stylesheet" href='{% static "css/tables.css" %}'>
+    <link rel="stylesheet" href='{% static "css/users.css" %}'>
 {% endblock css %}
 
 {% block content %}
+<div class="modal" tabindex="-1" role="dialog" id="reserve_modal">
+    <div class="modal-dialog" role="document">
+        <form action="{% url 'reserve_day'%}" method="post" novalidate>
+            {% csrf_token %}
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div style="display:none">
+                  {{ date_form.date_reserver}}
+                </div>
+                {{order_form|crispy}}              
+              </div>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" >Submit</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Back</button>
+              </div>
+            </div>
+        </form>
+    </div>
+</div>
 <div class="conteiner-fluid">
-	<div class="row">
-		<div class="col-4">{%if back%}<a href="{% url 'reserve_day' %}?date_reserver={{back}}">Back</a>{%endif%}</div>
-		<div class="col-4"><form action="{% url 'reserve_day' %}">
-			{{ date_form|bootstrap}}
-			<button class="btn btn-primary">Submit</button>
-		</form></div>
-		<div class="col-4"><a href="{% url 'reserve_day' %}?date_reserver={{next}}">Next</a></div>
-	</div>
-	<div class="row">
-		<div style=" width: 100vw;height: 100vh;">
-			{% for table in tables %}
-				<div class="table {{table.form_type}}" style="left:{{table.pos_x}}%;top:{{table.pos_y}}%;height: {{table.height }}px;width:{{table.width}}px;"></div>
-			{% endfor %}
-		</div>
-	</div>
+
+    <div class="row">
+        <div class="col-3">{%if back%}<a href="{% url 'reserve_day' %}?date_reserver={{back}}">Back</a>{%endif%}</div>
+        <div class="col-6 form-inline"><form class="form-inline" action="{% url 'reserve_day' %}">
+            {{ date_form|bootstrap}}
+            <button class="btn btn-primary">Submit</button>
+        </form>
+        <button id="reserve" class="btn btn-success" style="fload:left;display:none" data-toggle="modal" data-target="#reserve_modal">Reserve</button>
+    </div>
+        <div class="col-3"><a href="{% url 'reserve_day' %}?date_reserver={{next}}">Next</a></div>
+    </div>
+    <div class="row">
+        <div style=" width: 100vw;height: 100vh;">
+            {% for table in tables %}
+                <div class="table {{table.form_type}} {% if table.id|is_reserved:date_query %}reserved{%else%}{%endif%}" style="left:{{table.pos_x}}%;top:{{table.pos_y}}%;height: {{table.height }}px;width:{{table.width}}px;" data-id="{{table.id}}">{%if table.id|is_reserved:date_query%}<div>Reserved</div>{%else%}<div>№{{table.number}}</div><div class="icon-users"> {{table.capacity}}</div>{%endif%}</div>
+            {% endfor %}
+        </div>
+    </div>
 </div>
 {% endblock content %}
 
 {% block js %}
+{{order_form.media}}
+{{date_form.media}}
+<script >
+    function remove_table(value){
+        $('#id_tables>option[value='+value+']').prop('selected',false)
+    }
+    function add_table(value){
+        $('#id_tables>option[value='+value+']').prop('selected','selected')
+    }
+    $('#div_id_tables').hide()
+    $(".table").click(function(){
+        
+        if ($(this).hasClass("reserved")){
+            return false
+        }else{
+            $(this).toggleClass("reserve")
+            if ($(this).hasClass("reserve")){
+                add_table($(this).data("id"))                
+            }else{
+                remove_table($(this).data("id"))   
+            }
+        }
+        if ($(".reserve").length>0){
+            $("#reserve").show()
+        }else{
+            $("#reserve").hide()
+        }
+    })
+</script>
     
 {% endblock js %}

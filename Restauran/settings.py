@@ -29,6 +29,7 @@ DATE_FORMAT = '%b %d %Y'
 
 ALLOWED_HOSTS = []
 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Application definition
 
@@ -40,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'bootstrapform',
+    'bootstrap_datepicker',
     'dal',
     'dal_select2',
     'crispy_forms',
